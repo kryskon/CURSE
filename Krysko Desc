@@ -1,6 +1,23 @@
 Waterfall:
-In this model, the idea is to break up a project into stages and work through them one after another. The first step requires gathering all of the requirements of the project. In the case of CURSE, the requirements will change slightly as the project goes on, but listed above are the current requirements. The next step involves defining hardware and software specifications. Two main choices for CURSE will be deciding which language to use (Python, Java, C++) and which database software to use. Next, the actual systems need to be created. This covers the creation of databases, user interfaces, etc. In this stage, these systems will be tested individually for functionality. In the next step, the systems are integrated together and tested again as a whole system. Finally, the project is then released and monitored for bugs and potential new features or requirements.
+    In this model, the idea is to break up a project into stages and work through them one after another.
+The first step requires gathering all of the requirements of the project.
+In the case of CURSE, the requirements will change slightly as the project goes on, but listed above are the current requirements.
+The next step involves defining hardware and software specifications.
+Two main choices for CURSE will be deciding which language to use (Python, Java, C++) and which database software to use.
+Next, the actual systems need to be created.
+This covers the creation of databases, user interfaces, etc. In this stage, these systems will be tested individually for functionality.
+In the next step, the systems are integrated together and tested again as a whole system.
+Finally, the project is then released and monitored for bugs and potential new features or requirements.
 
- 
-Integrate and Configure
-The incremental Development process starts by creating a base version of a program and building on it with each additional iteration. For CURSE, a base version could consist of the simple necessary components shown above. This base version is functional and demonstrates some of the basic systems required for the overall project, however it lacks a lot of requirements. A new iteration (version 0.2) would be made and add on to the base version. From here, as many iterations would be made as needed until the final product is created. 
+
+Incremental:
+    The incremental Development process starts by creating a base version of a program and building on it with each additional iteration.
+For CURSE, a base version could consist of the simple necessary components shown above.
+This base version is functional and demonstrates some of the basic systems required for the overall project, however it lacks a lot of requirements.
+A new iteration (version 0.2) would be made and add on to the base version.
+From here, as many iterations would be made as needed until the final product is created. 
+
+
+Integrate and Configure:
+    Outsource certain aspects of the project: it may have already been done!
+Add some details about this.
