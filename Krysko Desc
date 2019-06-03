@@ -15,9 +15,20 @@ Incremental:
 For CURSE, a base version could consist of the simple necessary components shown above.
 This base version is functional and demonstrates some of the basic systems required for the overall project, however it lacks a lot of requirements.
 A new iteration (version 0.2) would be made and add on to the base version.
-From here, as many iterations would be made as needed until the final product is created. 
+From here, as many iterations would be made as needed until the final product is created.
 
 
 Integrate and Configure:
-    Outsource certain aspects of the project: it may have already been done!
-Add some details about this.
+    The Integrate and Configure model is based around the concept of finding existing programs and systems that can be integrated together and built upon to achieve the project goal.
+For the case of CURSE, there are a few programs that could potentially be used with this method.
+The following program (found on sourceforge) is an open source registration software written in Java.
+It provides a simple user interface and allows for a student to choose courses and add up their total credits: [1]
+https://sourceforge.net/projects/courseregistra/
+This is a good base, but it lacks a lot of requirements for our specific CURSE project.
+There is no database component, no instructor/admin roles, and you can’t select multiple semesters.
+However, as part of the Integrate and Configure process, different components can be found and integrated into the program to satisfy the remaining requirements.
+On the other hand, there is also professional course registration software available for purchase from various companies.
+This type of software would be considered commercial-off-the-shelf, as it is a solution that can be purchased for use in place of a custom-made program.
+One such example would be the software offered by Course Storm[2], which satisfies all of the requirements and even has extra features available.
+The downside to this type of solution is that there are often limited ways to modify the software to include unique features.
+If the company does not offer a way to fulfill your special requirements, the only options left are to find another company that will or create your own program.
