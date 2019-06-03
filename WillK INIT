@@ -38,10 +38,12 @@ Waterfall Model
             1.	Registration day
         iii.	Admin portal for administering local
         iv.	Redundant backups
-    b.	Web clinet
+    b.	Web client
         i.	User viewable
         ii.	Client side display
         iii.	Web data view only
+    c.  Software Language
+        i.  C++, Python, or Java
 3.	Implementation and Unit testing
     a.	Software development
         i.	Software creation for server side
@@ -91,6 +93,7 @@ Incremental Development Model
 2.	First Revision
     a. 	Basic functionality
         i.	Pull requests from clients
+            1.  Basic UI
         ii.	Research based
     b.	Develop interest from real world
     c.	Could be course schedule first
