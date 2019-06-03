@@ -1,0 +1,205 @@
+Will Kelsey
+APC Prof. Carpenter
+Summer 2019
+CURSE Process Models
+
+Waterfall Model
+1.	Specifications
+a.	Database of users
+i.	~100 students
+ii.	10 instructors
+iii.	1 admin
+b.	Database of courses
+i.	CRN
+ii.	Course name
+iii.	Times
+iv.	Instructor
+c.	Students
+i.	Can register
+ii.	See available courses
+iii.	See own schedule
+d.	Instructor
+i.	See available courses
+ii.	See own course roster
+e.	Admin
+i.	Can see all
+ii.	Can edit all
+1.	Users
+2.	Courses
+3.	Schedule
+4.	Etc.
+f.	Includes multiple semesters
+g.	Printable schedule
+h.	Scheduling preferences
+2.	System Architecture
+a.	Hosted server
+i.	Ability to handle all requests
+ii.	Load balancing for peak usage times
+1.	Registration day
+iii.	Admin portal for administering local
+iv.	Redundant backups
+b.	Web clinet
+i.	User viewable
+ii.	Client side display
+iii.	Web data view only
+3.	Implementation and Unit testing
+a.	Software development
+i.	Software creation for server side
+b.	Server creation
+i.	Hardware config and redundancy
+c.	Creative team on web interface
+i.	Visual bugs and accurate access
+4.	Integration and system testing
+a.	Bring in sample data
+b.	Use beta testers for single class
+i.	Maintain previous system as backup
+ii.	Close communication
+5.	Operation/Maintenance
+a.	Onsite personnel
+i.	Rapid repair of bugs and issues for short time after rollout
+b.	Global support team
+i.	Support multiple instances on many sites
+
+Incremental Development Model
+1.	Specifications
+a.	Database of users
+i.	~100 students
+ii.	10 instructors
+iii.	1 admin
+b.	Database of courses
+i.	CRN
+ii.	Course name
+iii.	Times
+iv.	Instructor
+c.	Students
+i.	Can register
+ii.	See available courses
+iii.	See own schedule
+d.	Instructor
+i.	See available courses
+ii.	See own course roster
+e.	Admin
+i.	Can see all
+ii.	Can edit all
+1.	Users
+2.	Courses
+3.	Schedule
+4.	Etc.
+f.	Includes multiple semesters
+g.	Printable schedule
+h.	Scheduling preferences
+2.	First Revision
+a.	Basic functionality
+i.	Pull requests from clients
+ii.	Research based
+b.	Develop interest from real world
+c.	Could be course schedule first
+3.	Second Revision
+a.	Build out with specs from research
+b.	Use client feedback
+c.	Scheduling with course instructor database
+d.	Begin development of web interface for local program
+4.	Third Revision
+a.	Server based
+i.	Rudimentary access to a server
+ii.	Limited control
+b.	Student database with student schedule
+5.	Fourth Revision
+a.	Web interface
+i.	Focus on student access
+b.	Student access to viewing courses and professors
+c.	First instance of registration system for student side
+6.	Fifth Revision
+a.	Web interface makeover
+i.	Focus on design and ease of use
+b.	Full implementation of student course registration
+c.	Begin use of student preferences
+i.	Time
+ii.	Professor
+iii.	Elective preference
+7.	Sixth Revision
+a.	Full automation of course scheduling based on student preferences
+b.	Automatic efficient scheduling for course timing and locations
+8.	Further development based on customer requests
+
+Integration Model
+1.	Specifications
+a.	Database of users
+i.	~100 students
+ii.	10 instructors
+iii.	1 admin
+b.	Database of courses
+i.	CRN
+ii.	Course name
+iii.	Times
+iv.	Instructor
+c.	Students
+i.	Can register
+ii.	See available courses
+iii.	See own schedule
+d.	Instructor
+i.	See available courses
+ii.	See own course roster
+e.	Admin
+i.	Can see all
+ii.	Can edit all
+1.	Users
+2.	Courses
+3.	Schedule
+4.	Etc.
+f.	Includes multiple semesters
+g.	Printable schedule
+h.	Scheduling preferences
+2.	Pick a platform to jump from
+a.	CourseStorm
+b.	Regpack
+c.	ProClass
+d.	RegFox
+e.	Aventri
+f.	Amilia
+g.	Learning Sdtream
+h.	ePly
+i.	RedPodium
+j.	EventBank
+k.	Eventbrite
+l.	Eventgrid
+m.	Race Entry
+n.	Pike13
+o.	Arlo
+p.	Configio
+q.	123Signup Association Manger
+r.	InitLive
+s.	Bizzabo
+t.	RegOnline
+u.	https://www.softwareadvice.com/registration/
+v.	https://www.capterra.com/class-registration-software/
+3.	Choose
+a.	Price
+i.	Costs per head
+ii.	Per class
+iii.	Per institution (lump)
+iv.	Subscription
+v.	Limit count pricing
+b.	Platform
+i.	Linux
+ii.	Windows
+iii.	Mac (prefer alternatives; see Linux)
+c.	Size of capacity
+i.	Small
+ii.	Medium
+iii.	Large
+iv.	Enterprise
+v.	Consortium
+d.	Ease of development
+i.	Community support
+ii.	Trainings
+iii.	Onsite support
+iv.	Preconfigured by default
+4.	Implement
+a.	Depending on service/services chosen
+b.	Configure for local environment
+c.	Build up application specific features
+5.	Testing and patching
+a.	Start with small sample and beta testers
+b.	Use support if needed
+6.	Deployment
