@@ -4,11 +4,12 @@
 
 class user{
   protected:
+    std::clearance
     std::string name;
     std::string userName;
     std::string password; //storing in plain text for now
   public:
-    user() {}
+    user(){}
     user(std::string n):name(n){}
     ~user(){}
 
@@ -27,9 +28,16 @@ class student:public user{
     std::string major;
     std::int year; //freshman, sophmore, etc
   public:
+    student(){}
+    student(std::string m, int y){major = m, year = y;}
+    ~student(){}
 
 
-    void set
+    void setMajor(std::string m){major = m;}
+    std::string getMajor(){return major;}
+    void setYear(int y){year = y;}
+    int getYear(){return year;}
+
 
 
 };
@@ -43,6 +51,7 @@ class instructor:public user{
 
 class admin:public user{
   protected:
+
   public:
 
 
