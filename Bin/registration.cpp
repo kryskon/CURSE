@@ -22,4 +22,3 @@ class user{
     void setPassword(std::string p){password = p;}
     std::string getPassword(){return password;}
 };
-

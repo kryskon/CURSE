@@ -1,17 +1,19 @@
 #include <string>
 #include <iostream>
+#include <vector>
+#include ""
 
 using namespace std;
 
 class student:public user{
   protected:
     string major;
+    vector<int> classes;
     int year; //freshman, sophmore, etc
   public:
     student(){}
-    student(string m, int y){major = m, year = y;}
+    student(string m, int y, vector<int> crn){major = m, year = y;}
     ~student(){}
-
 
     void setMajor(string m){major = m;}
     string getMajor(){return major;}
@@ -19,12 +21,16 @@ class student:public user{
     int getYear(){return year;}
 
     void print(){
-      std::cout << getMajor() << getYear() << std::endl;
+      cout << getMajor() << getYear() << endl;
     }
 
-    void add function here.....
+    void register(string m, int y){ //put inside of class?
+      int crn;
+      cout << "Please enter a course crn: ";
+      cin >> crn;
+      //search database for crn. Find course and requirements
+      //compare prereqs and class sizez. If no issues:
+      classes.push_back(crn);
+    }
+
 };
-
-
-weawefadsgfjawergoawrga
-tHIUWEpoijaoieshfaoesifjisefnojwaehfiubevi;brbdlnab
