@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ class student:public user{
       std::cout << getMajor() << getYear() << std::endl;
     }
 
+    void add function here.....
 };
 
 
