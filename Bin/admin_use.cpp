@@ -13,6 +13,16 @@ class admin:public user{
     admin(string t){title = t;}
     ~admin(){}
 
+
+    void viewSchedule(){
+        string name;
+        cout << "Enter the user name of the student/instructor you wish to view the schedule of: "
+        cin >> name;
+        for(vector<int>::iterator ptr = classes.begin(); ptr != classes.end(); ptr++){
+          //take username and lookup in database
+          //return schedule
+        }
+    }
     void manageClasses(){
       //have access to whole database
       int choice;
