@@ -4,13 +4,13 @@
 
 class user{
   protected:
-    std::clearance
+    int clearanceLevel;
     std::string name;
     std::string userName;
     std::string password; //storing in plain text for now
   public:
     user(){}
-    user(std::string n):name(n){}
+    user(int c, std::string n, std::string u, std::string p ):clearanceLevel(c), name(n), userName(u), password(p){}
     ~user(){}
 
     void registerClass();
@@ -22,3 +22,41 @@ class user{
     void setPassword(std::string p){password = p;}
     std::string getPassword(){return password;}
 };
+
+<<<<<<<
+
+=======
+class student:public user{
+  protected:
+    std::string major;
+    std::int year; //freshman, sophmore, etc
+
+  public:
+    student(){}
+    student(std::string m, int y){major = m, year = y;}
+    ~student(){}
+
+    void setMajor(std::string m){major = m;}
+    std::string getMajor(){return major;}
+    void setYear(int y){year = y;}
+    int getYear(){return year;}
+};
+
+class instructor:public user{
+  protected:
+    std::string instructorType; //CS, electrical, etc...
+  public:
+
+
+
+};
+
+class admin:public user{
+  protected:
+
+  public:
+
+
+}
+
+>>>>>>>
