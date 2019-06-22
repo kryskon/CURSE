@@ -1,7 +1,10 @@
+#include <iostream>
+#include <string>
+
 class student:public user{
   protected:
     std::string major;
-    std::int year; //freshman, sophmore, etc
+    int year; //freshman, sophmore, etc
   public:
     student(){}
     student(std::string m, int y){major = m, year = y;}
@@ -13,6 +16,8 @@ class student:public user{
     void setYear(int y){year = y;}
     int getYear(){return year;}
 
-
+    void print(){
+      std::cout << getMajor() << getYear() << std::endl;
+    }
 
 };
