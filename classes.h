@@ -29,8 +29,6 @@ class user{
     }
 };
 
-list<user> userList; //holds all users until database integration
-
 
 class student:public user{
   protected:
@@ -47,7 +45,7 @@ class student:public user{
     void setYear(string y){year = y;}
     string getYear(){return year;}
 
-    void Register(){ //put inside of class?
+    void Register(){
       int crn;
       cout << "Please enter a course crn: ";
       cin >> crn;
@@ -71,7 +69,8 @@ class student:public user{
       //options here
     }
 };
-list<student> studentList;
+
+list<student> studentList; //list of all students until database integration
 
 class instructor:public user{
   protected:
@@ -98,7 +97,7 @@ class instructor:public user{
     }
 };
 
-list<instructor> instructorList;
+list<instructor> instructorList; //list of all instructors until database integration
 
 class course{
   protected:
@@ -119,6 +118,7 @@ class course{
     string getSubject(){return subject;}
 
 };
+
 list<course> courseList; //holds all available courses until database integration
 
 
@@ -203,17 +203,7 @@ class admin:public user{
     }
 };
 
-list<admin> adminList;
-
-list<user>::iterator attemptlogin(string n, string p){ //return a pointer to some object in the list
-  list<user>::iterator ptr;
-  for(ptr = userList.begin(); ptr != userList.end(); ptr++){ //search list for matching username
-    if((ptr->getUserName() == n) && (ptr->getPassword() == p)){return ptr;} //if match, return pointer
-  }
-  for(ptr = userList.begin(); ptr != userList.end(); ptr++){  //if no match, return NULL pointer
-    if(ptr->getUserName() == "NULL"){return ptr;}
-  }
-}
+list<admin> adminList; //list of all admins until database integration
 
 list<student>::iterator attemptloginS(string n, string p){
   list<student>::iterator ptr;

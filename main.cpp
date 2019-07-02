@@ -27,11 +27,11 @@ int main(){
 	cin >> usrN;
 	cout << "Enter your password: ";
 	cin >> usrP;
-	user1 = attemptloginS(usrN, usrP);
+	user1 = attemptloginS(usrN, usrP); //cehck if user is a student
 	if (user1->getUserName()=="NULL"){
-		user2 = attemptloginI(usrN, usrP);
+		user2 = attemptloginI(usrN, usrP); //check if user is an instructor
 			if(user2->getUserName()=="NULL"){
-				user3 = attemptloginA(usrN, usrP);
+				user3 = attemptloginA(usrN, usrP); //check if user is an admin
 				type = 3;
 			}
 			else{type = 2;}
@@ -48,7 +48,7 @@ int main(){
 		}
 	}
 	else {
-		if (user3->getUserName() != "NULL"){ //if user is an admin
+		if (user3->getUserName() != "NULL"){ //if user is an admin...
 			while(!logout){
 				user3->options();
 			}
