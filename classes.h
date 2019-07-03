@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <list>
+#include <vector>
 
 using namespace std;
 
@@ -29,6 +30,27 @@ class user{
     }
 };
 
+class course{
+  protected:
+    int CRN;
+    string minYear, subject, instructorUsername; //must be junior, senior, etc to register for this class
+    //list<student> students;
+
+  public:
+    course(){}
+    course(int c, string y, string s, string i){CRN = c, minYear = y, subject = s, instructorUsername = i;}
+    ~course(){}
+
+    void setCRN(int c){CRN = c;}
+    int getCRN(){return CRN;}
+    void setMinYear(string y){minYear = y;}
+    string getMinYear(){return minYear;}
+    void setSubject(string s){subject = s;}
+    string getSubject(){return subject;}
+
+};
+
+list<course> courseList; //holds all available courses until database integration
 
 class student:public user{
   protected:
@@ -64,9 +86,41 @@ class student:public user{
         }
       }
     }
+    
+    void listCourses(){
+      cout << "Availible courses: ";
+      for (list<course>::iterator it = courseList.begin(); it != courseList.end(); it++)
+        cout << (it->getCRN()) << ' ';
+        cout << '\n';
+    }
+
+    void currentEnrolled(){
+      cout << "Enrolled courses: ";
+      for (list<int>::iterator it = classes.begin(); it != classes.end(); it++)
+        cout << (*it) << ' ';
+        cout << '\n';
+    }
 
     int options(){
-      //options here
+      int userChoice;
+      cout << "Enter 1 to view courses\nEnter 2 to register for courses\nEnter 3 to drop a class\nEnter 4 to list enrolled classes\nEnter 5 to logout\n";
+      cin >> userChoice;
+      switch(userChoice){
+        case 1:
+          this->listCourses();
+          break;
+        case 2:
+          this->Register();
+          break;
+        case 3:
+          this->dropClass();
+          break;
+        case 4:
+          this->currentEnrolled();
+        case 5:
+          return 0;
+          break;  //need to somehow logout here
+      }
     }
 };
 
@@ -92,35 +146,12 @@ class instructor:public user{
         }
     }
 
-    void options(){
+    int options(){
       //options here
     }
 };
 
 list<instructor> instructorList; //list of all instructors until database integration
-
-class course{
-  protected:
-    int CRN;
-    string minYear, subject, instructorUsername; //must be junior, senior, etc to register for this class
-    list<student> students;
-
-  public:
-    course(){}
-    course(int c, string y, string s, string i){CRN = c, minYear = y, subject = s, instructorUsername = i;}
-    ~course(){}
-
-    void setCRN(int c){CRN = c;}
-    int getCRN(){return CRN;}
-    void setMinYear(string y){minYear = y;}
-    string getMinYear(){return minYear;}
-    void setSubject(string s){subject = s;}
-    string getSubject(){return subject;}
-
-};
-
-list<course> courseList; //holds all available courses until database integration
-
 
 class admin:public user{
   protected:
@@ -181,7 +212,7 @@ class admin:public user{
       cout << "\nEnter a password: ";
       cin >> p;
       student newStudent(fn, ln, u, p, m , y);
-      userList.push_front(newStudent); //always push to front
+      studentList.push_front(newStudent); //always push to front
     }
 
     int options(){

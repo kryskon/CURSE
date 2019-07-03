@@ -6,16 +6,32 @@
 using namespace std;
 
 int main(){
-	user nullUser("NULL", "NULL", "NULL", "NULL"); //NULL objects. Very important, don't delete
-	userList.push_back(nullUser);
 	student nullStudent("NULL", "NULL", "NULL", "NULL", "NULL", "NULL");
 	studentList.push_back(nullStudent);
+	student newStudent("Will", "Kelsey", "willk", "password1", "Computer Engineer", "Fall 2016");
+	studentList.push_front(newStudent);
+
 	instructor nullInstructor("NULL", "NULL", "NULL", "NULL", "NULL");
 	instructorList.push_back(nullInstructor);
+	instructor newInstructor("Aaron", "Carpenter", "carpentera1", "professor", "APC");
+	instructorList.push_front(newInstructor);
+
 	admin nullAdmin("NULL", "NULL", "NULL", "NULL", "NULL");
 	adminList.push_back(nullAdmin);
 	admin newAdmin("Nick", "Krysko", "password1", "kryskon", "sysadmin"); //need at least one default admin to start
 	adminList.push_front(newAdmin); //make sure all new users get pushed to the front, NOT THE BACK
+
+	course nullCourse(00000, "NULL", "NULL", "NULL");
+	courseList.push_back(nullCourse);
+	course newCourse0(12345, "2016", "Computer Stuff", "Aaron Carpenter");
+	courseList.push_front(newCourse0);
+	course newCourse1(66666, "2016", "More Computer Stuff", "Aaron Carpenter");
+	courseList.push_front(newCourse1);
+	course newCourse2(77777, "2016", "Some Computer Stuff", "Aaron Carpenter");
+	courseList.push_front(newCourse2);
+	course newCourse3(13579, "2016", "Just Computer Stuff", "Aaron Carpenter");
+	courseList.push_front(newCourse3);
+
 	string usrN;
 	string usrP;
 	list<student>::iterator user1; //potential user type student
