@@ -66,6 +66,8 @@ class student:public user{
     string getMajor(){return major;}
     void setYear(string y){year = y;}
     string getYear(){return year;}
+    void setClasses(list<int> c){classes = c;}
+    list<int> getClasses(){return classes;}
 
     void Register(){
       int crn;
@@ -86,7 +88,7 @@ class student:public user{
         }
       }
     }
-    
+
     void listCourses(){
       cout << "Availible courses: ";
       for (list<course>::iterator it = courseList.begin(); it != courseList.end(); it++)
@@ -103,7 +105,7 @@ class student:public user{
 
     int options(){
       int userChoice;
-      cout << "Enter 1 to view courses\nEnter 2 to register for courses\nEnter 3 to drop a class\nEnter 4 to list enrolled classes\nEnter 5 to logout\n";
+      cout << "\nEnter 1 to view courses\nEnter 2 to register for courses\nEnter 3 to drop a class\nEnter 4 to list enrolled classes\nEnter 5 to logout\n";
       cin >> userChoice;
       switch(userChoice){
         case 1:
@@ -118,9 +120,10 @@ class student:public user{
         case 4:
           this->currentEnrolled();
         case 5:
-          return 0;
+          return 1;
           break;  //need to somehow logout here
       }
+      return 0;
     }
 };
 
@@ -129,7 +132,7 @@ list<student> studentList; //list of all students until database integration
 class instructor:public user{
   protected:
     string instructorSubject; //CS, electrical, mechanical, etc...
-    vector<int> classes; //listed by CRN code
+    list<int> classes; //listed by CRN code
 
   public:
     instructor(){}
@@ -138,16 +141,45 @@ class instructor:public user{
 
     void setInstructorSubject(string s){instructorSubject = s;}
     string getInstructorSubject(){return instructorSubject;}
+    void setClasses(list<int> c){classes = c;}
+    list<int> getClasses(){return classes;}
 
-    void viewSchedule(){
-        for(vector<int>::iterator ptr = classes.begin(); ptr != classes.end(); ptr++){
-          //take crn and lookup in database
-          //return class info (students, time, etc)
+    void viewRoster(){ //may need to change completely when databases get implemented.
+      for(list<int>::iterator it = classes.begin(); it != classes.end(); it++){  //start with first class
+        cout << "\nIn course " << *it << ": ";
+        for(list<student>::iterator ptr = studentList.begin(); ptr != studentList.end(); ptr++){ //scan for students
+          if(ptr->getUserName() != "NULL"){
+            list<int> slist = ptr->getClasses();
+            for(list<int>::iterator ptr2 = slist.begin(); ptr2 != slist.end(); ptr2++){ //scan for students courses
+              if(*ptr2 == *it){  //if match, output username;
+                cout << ptr->getUserName() << endl;
+              }
+            }
+          }
         }
+      }
+    }
+
+    void viewClasses(){
+
     }
 
     int options(){
-      //options here
+      int userChoice;
+      cout << "\nEnter 1 to view roster\nEnter 2 to view classes\nEnter 3 to logout\n";
+      cin >> userChoice;
+      switch(userChoice){
+        case 1:
+          this->viewRoster();
+          break;
+        case 2:
+          this->viewClasses();
+          break;
+        case 3:
+          return 1;
+          break;  //need to somehow logout here
+      }
+      return 0;
     }
 };
 
@@ -217,7 +249,7 @@ class admin:public user{
 
     int options(){
       int userChoice;
-      cout << "Enter 1 to add a course\nEnter 2 to remove a course\nEnter 3 to logout\n";
+      cout << "\nEnter 1 to add a course\nEnter 2 to remove a course\nEnter 3 to logout\n";
       cin >> userChoice;
       switch(userChoice){
         case 1:
@@ -227,10 +259,10 @@ class admin:public user{
           this->removeCourse();
           break;
         case 3:
-          return 0;
+          return 1;
           break;  //need to somehow logout here
       }
-      //options here
+      return 0;
     }
 };
 

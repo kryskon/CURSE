@@ -9,11 +9,19 @@ int main(){
 	student nullStudent("NULL", "NULL", "NULL", "NULL", "NULL", "NULL");
 	studentList.push_back(nullStudent);
 	student newStudent("Will", "Kelsey", "willk", "password1", "Computer Engineer", "Fall 2016");
+	list<int> studentClasses; //gives this student a list of classes to test with
+	studentClasses.push_front(12345);
+	studentClasses.push_front(66666);
+	newStudent.setClasses(studentClasses);
 	studentList.push_front(newStudent);
 
 	instructor nullInstructor("NULL", "NULL", "NULL", "NULL", "NULL");
 	instructorList.push_back(nullInstructor);
 	instructor newInstructor("Aaron", "Carpenter", "carpentera1", "professor", "APC");
+	list<int> carpenterClasses; //gives this instructor a basic course list to test with
+	carpenterClasses.push_front(12345);
+	carpenterClasses.push_front(66666);
+	newInstructor.setClasses(carpenterClasses);
 	instructorList.push_front(newInstructor);
 
 	admin nullAdmin("NULL", "NULL", "NULL", "NULL", "NULL");
@@ -55,18 +63,18 @@ int main(){
 	else{type = 1;}
 	if(type == 1){ //if user is a student...
 		while(!logout){
-			user1->options();
+			logout = user1->options();
 		}
 	}
 	else if(type == 2){ //if user is an instructor...
 		while(!logout){
-			user2->options();
+			logout = user2->options();
 		}
 	}
 	else {
 		if (user3->getUserName() != "NULL"){ //if user is an admin...
 			while(!logout){
-				user3->options();
+				logout = user3->options();
 			}
 		}
 		else {
