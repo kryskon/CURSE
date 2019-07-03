@@ -161,7 +161,11 @@ class instructor:public user{
     }
 
     void viewClasses(){
-
+      cout << "Currently teaching classes: ";
+      for(list<int>::iterator it = classes.begin(); it != classes.end(); it++){
+        cout << *it << " ";
+      }
+      cout << endl;
     }
 
     int options(){
