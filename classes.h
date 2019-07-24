@@ -2,6 +2,8 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <stdio.h>
+#include <sqlite3.h>
 
 using namespace std;
 

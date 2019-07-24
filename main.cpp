@@ -2,10 +2,75 @@
 #include <string>
 #include <list>
 #include "classes.h"
+#include <stdio.h>
+#include <sqlite3.h>
 
 using namespace std;
 
-int main(){
+static int callback(void* data, int argc, char** argv, char** azColName)
+{ 				// number of things to print; query result to print; query column name;
+	int i;
+
+    	for (i = 0; i < argc; i++) {
+        	printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    	}
+
+    	printf("\n");
+    	return 0;
+}
+
+int main(int argc, char** argv){
+
+	sqlite3* DB;
+	/*string table = "CREATE TABLE STUDENT("
+                "USERNAME TEXT PRIMARY KEY     NOT NULL, "
+                "FIRSTNAME           TEXT   	NOT NULL, "
+                "LASTNAME        	  TEXT    	NOT NULL, "
+                "GRADUATIONYEAR     	INT     NOT NULL, "
+									"MAJOR					TEXT 				NOT NULL, "
+								 	"EMAIL					TEXT 				NOT NULL); ";
+	  						"CREATE TABLE INSTRUCTOR("
+                "USERNAME TEXT PRIMARY KEY     NOT NULL, "
+                "FIRSTNAME           TEXT   	NOT NULL, "
+                "LASTNAME        	  TEXT    	NOT NULL, "
+                "TITLE    	INT     NOT NULL, "
+									"DEPARTMENT					TEXT 				NOT NULL, "
+								 	"EMAIL					TEXT 				NOT NULL, "
+								"YEARHIRED			INT NOT NULL); "
+	  					"CREATE TABLE ADMIN("
+                "USERNAME TEXT PRIMARY KEY     NOT NULL, "
+                "FIRSTNAME           TEXT   	NOT NULL, "
+                "LASTNAME        	  TEXT    	NOT NULL, "
+                "OFFICENUMBER    	INT     NOT NULL, "
+									"TITLE					TEXT 				NOT NULL, "
+								 	"EMAIL					TEXT 				NOT NULL); "
+	 							"CREATE TABLE COURSE"
+                "CRN INT PRIMARY KEY     NOT NULL, "
+                "TITLE           TEXT   	NOT NULL, "
+                "DEPARTMENT       	  TEXT    	NOT NULL, "
+                "INSTRUCTOR     	TEXT    NOT NULL, "
+									"TIME					TEXT 				NOT NULL, "
+								 	"DOW					TEXT 				NOT NULL, "
+									"SEMESTER 	TEXT NOT NULL, "
+									"YEAR 			INT NOT NULL, "
+									" CREDITS			INT NOT NULL); ";
+	int exit = 0;
+	exit = sqlite3_open("assignment7.db", &DB);
+	char* messageError;
+	exit = sqlite3_exec(DB, table.c_str(), NULL, 0, &messageError);
+	if (exit != SQLITE_OK){
+		cerr << "Error Create Table" << endl;
+		sqlite3_free(messageError);
+	}
+	else
+		cout << "Table created successfully" << endl;
+*/
+	sqlite3_open("assignment7.db", &DB);
+	string query = "SELECT * FROM STUDENT;";
+		cout << endl << query << endl;
+		sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
+
+
 	student nullStudent("NULL", "NULL", "NULL", "NULL", "NULL", "NULL");
 	studentList.push_back(nullStudent);
 	student newStudent("Will", "Kelsey", "willk", "password1", "Computer Engineer", "Fall 2016");
@@ -46,8 +111,8 @@ int main(){
 	list<instructor>::iterator user2; //potential user type instructor
 	list<admin>::iterator user3; //potential user type admin
 	int type;
-	int exit = 0;
-	while(!exit){
+	int done = 0;
+	while(!done){
 		int logout = 0;
 		int userChoice;
 		cout << "Enter 1 to login\nEnter 2 to exit the program\n";
@@ -88,6 +153,6 @@ int main(){
 				}
 			}
 		}
-		else exit = 1; //exit program
+		else done = 1; //exit program
 	}
 }
