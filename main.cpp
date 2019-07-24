@@ -22,28 +22,7 @@ static int callback(void* data, int argc, char** argv, char** azColName)
 int main(int argc, char** argv){
 
 	sqlite3* DB;
-	/*string table = "CREATE TABLE STUDENT("
-                "USERNAME TEXT PRIMARY KEY     NOT NULL, "
-                "FIRSTNAME           TEXT   	NOT NULL, "
-                "LASTNAME        	  TEXT    	NOT NULL, "
-                "GRADUATIONYEAR     	INT     NOT NULL, "
-									"MAJOR					TEXT 				NOT NULL, "
-								 	"EMAIL					TEXT 				NOT NULL); ";
-	  						"CREATE TABLE INSTRUCTOR("
-                "USERNAME TEXT PRIMARY KEY     NOT NULL, "
-                "FIRSTNAME           TEXT   	NOT NULL, "
-                "LASTNAME        	  TEXT    	NOT NULL, "
-                "TITLE    	INT     NOT NULL, "
-									"DEPARTMENT					TEXT 				NOT NULL, "
-								 	"EMAIL					TEXT 				NOT NULL, "
-								"YEARHIRED			INT NOT NULL); "
-	  					"CREATE TABLE ADMIN("
-                "USERNAME TEXT PRIMARY KEY     NOT NULL, "
-                "FIRSTNAME           TEXT   	NOT NULL, "
-                "LASTNAME        	  TEXT    	NOT NULL, "
-                "OFFICENUMBER    	INT     NOT NULL, "
-									"TITLE					TEXT 				NOT NULL, "
-								 	"EMAIL					TEXT 				NOT NULL); "
+	string table = 
 	 							"CREATE TABLE COURSE"
                 "CRN INT PRIMARY KEY     NOT NULL, "
                 "TITLE           TEXT   	NOT NULL, "
