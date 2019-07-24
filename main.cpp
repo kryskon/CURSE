@@ -22,8 +22,8 @@ static int callback(void* data, int argc, char** argv, char** azColName)
 int main(int argc, char** argv){
 
 	sqlite3* DB;
-	string table = 
-	 							"CREATE TABLE COURSE"
+	string table =
+	 							"CREATE TABLE COURSE("
                 "CRN INT PRIMARY KEY     NOT NULL, "
                 "TITLE           TEXT   	NOT NULL, "
                 "DEPARTMENT       	  TEXT    	NOT NULL, "
@@ -32,7 +32,7 @@ int main(int argc, char** argv){
 								 	"DOW					TEXT 				NOT NULL, "
 									"SEMESTER 	TEXT NOT NULL, "
 									"YEAR 			INT NOT NULL, "
-									" CREDITS			INT NOT NULL); ";
+									"CREDITS			INT NOT NULL); ";
 	int exit = 0;
 	exit = sqlite3_open("assignment7.db", &DB);
 	char* messageError;
