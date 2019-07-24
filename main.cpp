@@ -20,10 +20,8 @@ static int callback(void* data, int argc, char** argv, char** azColName)
 }
 
 int main(int argc, char** argv){
-
 	sqlite3* DB;
-	string table =
-	 							"CREATE TABLE COURSE("
+	string table = "CREATE TABLE COURSE("
                 "CRN INT PRIMARY KEY     NOT NULL, "
                 "TITLE           TEXT   	NOT NULL, "
                 "DEPARTMENT       	  TEXT    	NOT NULL, "
@@ -44,11 +42,24 @@ int main(int argc, char** argv){
 	else
 		cout << "Table created successfully" << endl;
 
-	sqlite3_open("assignment7.db", &DB);
-	string query = "SELECT * FROM STUDENT;";
-		cout << endl << query << endl;
-		sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 
+		string sql("INSERT INTO COURSE VALUES(5436, 'Computer Architecture', 'Computer Engineering', 'Alan Turing', '5:00', 'WF', 'Summer', 2019, 3);");
+
+	 exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+
+ if (exit != SQLITE_OK) {
+				 cerr << "Error Insert" << endl;
+				 sqlite3_free(messageError);
+		 }
+		 else
+				 cout << "Records created Successfully!" << endl;
+
+
+		 sqlite3_open("assignment7.db", &DB);
+	 	string query = "SELECT * FROM COURSE;";
+	 		cout << endl << query << endl;
+
+	 		sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 
 	student nullStudent("NULL", "NULL", "NULL", "NULL", "NULL", "NULL");
 	studentList.push_back(nullStudent);

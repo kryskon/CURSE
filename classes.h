@@ -220,6 +220,12 @@ class admin:public user{
       cin >> i;
       course newCourse(c, y, s, i);
       courseList.push_front(newCourse);
+      string sql("NSERT INTO PROGRAMMER VALUES(1, 'ADA', 'LOVELACE', 1815);"
+               	"INSERT INTO PROGRAMMER VALUES(2, 'GRACE', 'HOPPER', 1906);"
+		              "INSERT INTO PROGRAMMER VALUES(3, 'MARY KENNETH', 'KELLER', 1913);"
+               	"INSERT INTO PROGRAMMER VALUES(4, 'EVELYN', 'BOYD GRANVILLE', 1924);"
+		              "INSERT INTO PROGRAMMER VALUES(5, 'CAROL', 'SHAW', 1955);"
+		);
 
     }
     int removeCourse(){
