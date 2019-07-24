@@ -43,7 +43,7 @@ int main(int argc, char** argv){
 	}
 	else
 		cout << "Table created successfully" << endl;
-*/
+
 	sqlite3_open("assignment7.db", &DB);
 	string query = "SELECT * FROM STUDENT;";
 		cout << endl << query << endl;
