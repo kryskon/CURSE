@@ -11,7 +11,7 @@ static int callback(void* data, int argc, char** argv, char** azColName)
 { 				// number of things to print; query result to print; query column name;
 	int i;
 
-    	for (i = 0; i < argc; i++) {
+    	for (i = 0; i < argc; i++){
         	printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
     	}
 
@@ -21,87 +21,18 @@ static int callback(void* data, int argc, char** argv, char** azColName)
 
 int main(int argc, char** argv){
 	sqlite3* DB;
-	string table = "CREATE TABLE COURSE("
-                "CRN INT PRIMARY KEY     NOT NULL, "
-                "TITLE           TEXT   	NOT NULL, "
-                "DEPARTMENT       	  TEXT    	NOT NULL, "
-                "INSTRUCTOR     	TEXT    NOT NULL, "
-									"TIME					TEXT 				NOT NULL, "
-								 	"DOW					TEXT 				NOT NULL, "
-									"SEMESTER 	TEXT NOT NULL, "
-									"YEAR 			INT NOT NULL, "
-									"CREDITS			INT NOT NULL); ";
+	sqlite3_stmt *res;
 	int exit = 0;
-	exit = sqlite3_open("assignment7.db", &DB);
+	sqlite3_open("assignment7.db", &DB); //open database
 	char* messageError;
-	exit = sqlite3_exec(DB, table.c_str(), NULL, 0, &messageError);
-	if (exit != SQLITE_OK){
-		cerr << "Error Create Table" << endl;
-		sqlite3_free(messageError);
-	}
-	else
-		cout << "Table created successfully" << endl;
 
-
-		string sql("INSERT INTO COURSE VALUES(5436, 'Computer Architecture', 'Computer Engineering', 'Alan Turing', '5:00', 'WF', 'Summer', 2019, 3);");
-
-	 exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
-
- if (exit != SQLITE_OK) {
-				 cerr << "Error Insert" << endl;
-				 sqlite3_free(messageError);
-		 }
-		 else
-				 cout << "Records created Successfully!" << endl;
-
-
-		 sqlite3_open("assignment7.db", &DB);
-	 	string query = "SELECT * FROM COURSE;";
-	 		cout << endl << query << endl;
-
-	 		sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
-
-	student nullStudent("NULL", "NULL", "NULL", "NULL", "NULL", "NULL");
-	studentList.push_back(nullStudent);
-	student newStudent("Will", "Kelsey", "willk", "password1", "Computer Engineer", "Fall 2016");
-	list<int> studentClasses; //gives this student a list of classes to test with
-	studentClasses.push_front(12345);
-	studentClasses.push_front(66666);
-	newStudent.setClasses(studentClasses);
-	studentList.push_front(newStudent);
-
-	instructor nullInstructor("NULL", "NULL", "NULL", "NULL", "NULL");
-	instructorList.push_back(nullInstructor);
-	instructor newInstructor("Aaron", "Carpenter", "carpentera1", "professor", "APC");
-	list<int> carpenterClasses; //gives this instructor a basic course list to test with
-	carpenterClasses.push_front(12345);
-	carpenterClasses.push_front(66666);
-	newInstructor.setClasses(carpenterClasses);
-	instructorList.push_front(newInstructor);
-
-	admin nullAdmin("NULL", "NULL", "NULL", "NULL", "NULL");
-	adminList.push_back(nullAdmin);
-	admin newAdmin("Nick", "Krysko", "password1", "kryskon", "sysadmin"); //need at least one default admin to start
-	adminList.push_front(newAdmin); //make sure all new users get pushed to the front, NOT THE BACK
-
-	course nullCourse(00000, "NULL", "NULL", "NULL");
-	courseList.push_back(nullCourse);
-	course newCourse0(12345, "2016", "Computer Stuff", "Aaron Carpenter");
-	courseList.push_front(newCourse0);
-	course newCourse1(66666, "2016", "More Computer Stuff", "Aaron Carpenter");
-	courseList.push_front(newCourse1);
-	course newCourse2(77777, "2016", "Some Computer Stuff", "Aaron Carpenter");
-	courseList.push_front(newCourse2);
-	course newCourse3(13579, "2016", "Just Computer Stuff", "Aaron Carpenter");
-	courseList.push_front(newCourse3);
-
+	string query;
 	string usrN;
 	string usrP;
-	list<student>::iterator user1; //potential user type student
-	list<instructor>::iterator user2; //potential user type instructor
-	list<admin>::iterator user3; //potential user type admin
 	int type;
 	int done = 0;
+
+	//begin main loop
 	while(!done){
 		int logout = 0;
 		int userChoice;
@@ -112,37 +43,64 @@ int main(int argc, char** argv){
 			cin >> usrN;
 			cout << "Enter your password: ";
 			cin >> usrP;
-			user1 = attemptloginS(usrN, usrP); //cehck if user is a student
-			if (user1->getUserName()=="NULL"){
-				user2 = attemptloginI(usrN, usrP); //check if user is an instructor
-					if(user2->getUserName()=="NULL"){
-						user3 = attemptloginA(usrN, usrP); //check if user is an admin
-						type = 3;
+
+			//begin login process
+			query = "SELECT EMAIL, PASSWORD FROM ADMIN WHERE EMAIL = '" + usrN + "';"; //query to find result
+			const char *c = query.c_str();
+			sqlite3_prepare_v2(DB, c, -1, &res, 0);
+			sqlite3_bind_int(res, 1, 3);
+			int step = sqlite3_step(res);
+			if (step == SQLITE_ROW){		//if query actually has a row (i.e match found)
+				string QresultU = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 0))); //have to convert const char* to string
+				string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+				if (QresultU == usrN && QresultP == usrP){ //successful admin login
+					cout << "Login Successful\n";
+				}
+				else
+					cout << "invalid password\n";
+			}
+			else{
+				if(step != SQLITE_ROW){
+					query = "SELECT EMAIL, PASSWORD FROM INSTRUCTOR WHERE EMAIL = '" + usrN + "';";
+					c = query.c_str();
+					sqlite3_prepare_v2(DB, c, -1, &res, 0);
+					sqlite3_bind_int(res, 1, 3);
+					int step = sqlite3_step(res);
+					if (step == SQLITE_ROW){		//if query actually has a row (i.e match found)
+						string QresultU = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 0))); //have to convert const char* to string
+						string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+						if (QresultU == usrN && QresultP == usrP){ //successful instructor login
+							cout << "Login Successful\n";
+						}
+						else
+							cout << "invalid password\n";
 					}
-					else{type = 2;}
-			}
-			else{type = 1;}
-			if(type == 1){ //if user is a student...
-				while(!logout){
-					logout = user1->options();
 				}
-			}
-			else if(type == 2){ //if user is an instructor...
-				while(!logout){
-					logout = user2->options();
-				}
-			}
-			else {
-				if (user3->getUserName() != "NULL"){ //if user is an admin...
-					while(!logout){
-						logout = user3->options();
+				else{
+					if(step != SQLITE_ROW){
+						query = "SELECT EMAIL, PASSWORD FROM STUDENT WHERE EMAIL = '" + usrN + "';";
+						c = query.c_str();
+						sqlite3_prepare_v2(DB, c, -1, &res, 0);
+						sqlite3_bind_int(res, 1, 3);
+						int step = sqlite3_step(res);
+						if (step == SQLITE_ROW){		//if query actually has a row (i.e match found)
+							string QresultU = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 0))); //have to convert const char* to string
+							string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+							if (QresultU == usrN && QresultP == usrP){ //successful student login
+								cout << "Login Successful\n";
+							}
+							else
+								cout << "invalid password\n";
+						}
+						else
+							cout << "Invalid username\n";
 					}
-				}
-				else {
-					cout << "Error, invalid username or password\n";
 				}
 			}
 		}
-		else done = 1; //exit program
+		else
+			done = 1; //exit program
 	}
+	sqlite3_close(DB);
+	return 0;
 }

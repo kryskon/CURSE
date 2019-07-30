@@ -9,15 +9,17 @@ using namespace std;
 
 class user{
   protected:
-    string firstName, lastName, userName, password;
+    int ID;
+    string firstName, lastName, password, email;
 
   public:
     user(){}
-    user(string fn, string ln, string u, string p):firstName(fn), lastName(ln), userName(u), password(p){}
+    user(string fn, string ln, string e, string p):firstName(fn), lastName(ln), email(e), password(p){}
     ~user(){}
 
     void registerClass();
 
+    /*
     void setFirstName(string fn){firstName = fn;}
     string getFirstName(){return firstName;}
     void setLastName(string ln){lastName = ln;}
@@ -25,7 +27,7 @@ class user{
     string getUserName(){return userName;}
     void setPassword(string p){password = p;}
     string getPassword(){return password;}
-
+    */
     virtual int options(){
       //this is where users can choose an action based on user type
       //virtual so each class has it's own appropriate options
@@ -34,42 +36,44 @@ class user{
 
 class course{
   protected:
-    int CRN;
-    string minYear, subject, instructorUsername; //must be junior, senior, etc to register for this class
+    int CRN, credits, year;
+    string title, department, instructor, time, dow, semester; //must be junior, senior, etc to register for this class
     //list<student> students;
 
   public:
     course(){}
-    course(int c, string y, string s, string i){CRN = c, minYear = y, subject = s, instructorUsername = i;}
+    course(int c, int cr, int yr, string t, string d, string i, string ti, string days, string sem){CRN = c, credits = cr, year = yr, title = t, department = d, instructor = i, time = ti, dow = days, semester = sem;}
     ~course(){}
 
+    /*
     void setCRN(int c){CRN = c;}
     int getCRN(){return CRN;}
     void setMinYear(string y){minYear = y;}
     string getMinYear(){return minYear;}
     void setSubject(string s){subject = s;}
     string getSubject(){return subject;}
+    */
 
 };
 
-list<course> courseList; //holds all available courses until database integration
-
 class student:public user{
   protected:
-    string major, year;
-    list<int> classes;
+    string major;
+    int gradYear;
 
   public:
     student(){}
-    student(string fn, string ln, string u, string p, string m, string y){firstName = fn, lastName = ln, userName = u, password = p, major = m, year = y;}
+    student(string fn, string ln, string e, string p, string m, int y){firstName = fn, lastName = ln, email = e, password = p, major = m, gradYear = y;}
     ~student(){}
 
+    /*
     void setMajor(string m){major = m;}
     string getMajor(){return major;}
     void setYear(string y){year = y;}
     string getYear(){return year;}
     void setClasses(list<int> c){classes = c;}
     list<int> getClasses(){return classes;}
+    */
 
     void Register(){
       int crn;
@@ -77,32 +81,24 @@ class student:public user{
       cin >> crn;
       //search database for crn. Find course and requirements
       //compare prereqs and class sizez. If no issues:
-      classes.push_front(crn);
+
     }
 
     void dropClass(){
       int crn;
       cout << "Please enter a course crn: ";
       cin >> crn;
-      for(list<int>::iterator ptr = classes.begin(); ptr != classes.end(); ptr++){
-        if (crn == *ptr){
-          classes.erase(ptr);
-        }
-      }
+      //do db stuff
     }
 
     void listCourses(){
       cout << "Availible courses: ";
-      for (list<course>::iterator it = courseList.begin(); it != courseList.end(); it++)
-        cout << (it->getCRN()) << ' ';
-        cout << '\n';
+      //do db stuff
     }
 
     void currentEnrolled(){
       cout << "Enrolled courses: ";
-      for (list<int>::iterator it = classes.begin(); it != classes.end(); it++)
-        cout << (*it) << ' ';
-        cout << '\n';
+      //do db stuff
     }
 
     int options(){
@@ -129,45 +125,31 @@ class student:public user{
     }
 };
 
-list<student> studentList; //list of all students until database integration
 
 class instructor:public user{
   protected:
-    string instructorSubject; //CS, electrical, mechanical, etc...
-    list<int> classes; //listed by CRN code
+    string title, department; //CS, electrical, mechanical, etc...
+    int hireYear;
 
   public:
     instructor(){}
-    instructor(string fn, string ln, string u, string p, string s){firstName = fn, lastName = ln, userName = u, password = p, instructorSubject = s;}
+    instructor(string fn, string ln, string e, string p, string t, string d, int hy){firstName = fn, lastName = ln, email = e, password = p, title = t, department = d, hireYear = hy;}
     ~instructor(){}
 
+    /*()
     void setInstructorSubject(string s){instructorSubject = s;}
     string getInstructorSubject(){return instructorSubject;}
     void setClasses(list<int> c){classes = c;}
     list<int> getClasses(){return classes;}
+    */
 
     void viewRoster(){ //may need to change completely when databases get implemented.
-      for(list<int>::iterator it = classes.begin(); it != classes.end(); it++){  //start with first class
-        cout << "\nIn course " << *it << ": ";
-        for(list<student>::iterator ptr = studentList.begin(); ptr != studentList.end(); ptr++){ //scan for students
-          if(ptr->getUserName() != "NULL"){
-            list<int> slist = ptr->getClasses();
-            for(list<int>::iterator ptr2 = slist.begin(); ptr2 != slist.end(); ptr2++){ //scan for students courses
-              if(*ptr2 == *it){  //if match, output username;
-                cout << ptr->getUserName() << endl;
-              }
-            }
-          }
-        }
-      }
+      //do db stuff
     }
 
     void viewClasses(){
       cout << "Currently teaching classes: ";
-      for(list<int>::iterator it = classes.begin(); it != classes.end(); it++){
-        cout << *it << " ";
-      }
-      cout << endl;
+      //do db stuff
     }
 
     int options(){
@@ -189,74 +171,82 @@ class instructor:public user{
     }
 };
 
-list<instructor> instructorList; //list of all instructors until database integration
-
 class admin:public user{
   protected:
-    string title; //sys admin, registrar, etc. May not be necessary
+    string title, office; //sys admin, registrar, etc. May not be necessary
 
   public:
     admin(){}
-    admin(string fn, string ln, string p, string u, string t){firstName = fn, lastName = ln, userName = u, password = p, title = t;}
+    admin(string fn, string ln, string p, string e, string t, string o){firstName = fn, lastName = ln, email = e, password = p, title = t, office = o;}
     ~admin(){}
 
     void viewSchedule(){
         string name;
         cout << "Enter the user name of the student/instructor you wish to view the schedule of: ";
         cin >> name;
-        //scan for user. view thier schedule
+        //do db stuff
     }
 
     void addCourse(){
-      int c;
-      string y, s, i;
+      int c, cr, yr;
+      string t, d, i, ti, days, sem;
       cout << "Enter a CRN: ";
       cin >> c;
-      cout << "\nEnter a minimum year requirement (freshman, sophmore, junior, or senior): ";
-      cin >> y;
-      cout << "\nEnter the course subject (history, math, etc): ";
-      cin >> s;
-      cout << "\nEnter an instructor username: ";
+      cout << "Enter # of credits: ";
+      cin >> cr;
+      cout << "\nEnter the year: ";
+      cin >> yr;
+      cout << "\nEnter the course title: ";
+      cin >> ti;
+      cout << "\nEnter department: ";
+      cin >> d;
+      cout << "\nEnter instructor email (without @wit.edu): ";
       cin >> i;
-      course newCourse(c, y, s, i);
-      courseList.push_front(newCourse);
-      string sql("NSERT INTO PROGRAMMER VALUES(1, 'ADA', 'LOVELACE', 1815);"
+      cout << "\nEnter the class time: ";
+      cin >> ti;
+      cout << "\nEnter the days of the week the class will take place: ";
+      cin >> days;
+      cout << "\nEnter the semester: ";
+      cin >> sem;
+      course newCourse(c, cr, yr, t, d, i, ti, days, sem);
+      /*
+      string sql("INSERT INTO PROGRAMMER VALUES(1, 'ADA', 'LOVELACE', 1815);"
                	"INSERT INTO PROGRAMMER VALUES(2, 'GRACE', 'HOPPER', 1906);"
 		              "INSERT INTO PROGRAMMER VALUES(3, 'MARY KENNETH', 'KELLER', 1913);"
                	"INSERT INTO PROGRAMMER VALUES(4, 'EVELYN', 'BOYD GRANVILLE', 1924);"
 		              "INSERT INTO PROGRAMMER VALUES(5, 'CAROL', 'SHAW', 1955);"
-		);
+		   );
+    */
+    //may want to avoid doing db stuff in header file. instead pass variables through functions and alter in main??
 
     }
     int removeCourse(){
       int c;
       cout << "Enter the CRN of the course you wish to remove: ";
       cin >> c;
-      for(list<course>::iterator ptr = courseList.begin(); ptr != courseList.end(); ptr++){
-        if(ptr->getCRN() == c){
-          courseList.erase(ptr);
-          cout << "\nCourse successfully removed.\n";
-          return 0;
-        }
-      }
-      cout << "Error, course doesn't exist.\n";
+      //do db stuff
       return 0;
     }
 
 
     void addStudent(){
-      string fn, ln, u, p, m, y;
+      string fn, ln, e, p, m;
+      int y;
 
       cout << "Enter a first name: ";
       cin >> fn;
       cout << "\nEnter a last name: ";
       cin >> ln;
-      cout << "\nEnter a username: ";
-      cin >> u;
+      cout << "\nEnter an email (without @wit.edu on the end): ";
+      cin >> e;
       cout << "\nEnter a password: ";
       cin >> p;
-      student newStudent(fn, ln, u, p, m , y);
-      studentList.push_front(newStudent); //always push to front
+      cout << "\nEnter a major: ";
+      cin >> m;
+      cout << "\nEnter a graduation year: ";
+      cin >> y;
+      student newStudent(fn, ln, e, p, m , y);
+      //do db stuff
     }
 
     int options(){
@@ -278,8 +268,9 @@ class admin:public user{
     }
 };
 
-list<admin> adminList; //list of all admins until database integration
 
+
+/*
 list<student>::iterator attemptloginS(string n, string p){
   list<student>::iterator ptr;
   for(ptr = studentList.begin(); ptr != studentList.end(); ptr++){ //search list for matching username
@@ -309,3 +300,4 @@ list<admin>::iterator attemptloginA(string n, string p){
     if(ptr->getUserName() == "NULL"){return ptr;}
   }
 }
+*/
