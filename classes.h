@@ -14,7 +14,7 @@ class user{
 
   public:
     user(){}
-    user(string fn, string ln, string e, string p):firstName(fn), lastName(ln), email(e), password(p){}
+    user(int i, string fn, string ln, string e, string p):ID(i), firstName(fn), lastName(ln), email(e), password(p){}
     ~user(){}
 
     void registerClass();
@@ -28,6 +28,7 @@ class user{
     void setPassword(string p){password = p;}
     string getPassword(){return password;}
     */
+    int getID(){return ID;}
     virtual int options(){
       //this is where users can choose an action based on user type
       //virtual so each class has it's own appropriate options
@@ -63,7 +64,7 @@ class student:public user{
 
   public:
     student(){}
-    student(string fn, string ln, string e, string p, string m, int y){firstName = fn, lastName = ln, email = e, password = p, major = m, gradYear = y;}
+    student(int i, string fn, string ln, int y, string m, string e, string p){ID = i, firstName = fn, lastName = ln, email = e, password = p, major = m, gradYear = y;}
     ~student(){}
 
     /*
@@ -74,6 +75,7 @@ class student:public user{
     void setClasses(list<int> c){classes = c;}
     list<int> getClasses(){return classes;}
     */
+
 
     void Register(){
       int crn;
@@ -245,7 +247,6 @@ class admin:public user{
       cin >> m;
       cout << "\nEnter a graduation year: ";
       cin >> y;
-      student newStudent(fn, ln, e, p, m , y);
       //do db stuff
     }
 
