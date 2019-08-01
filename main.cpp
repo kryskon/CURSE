@@ -31,6 +31,7 @@ int main(int argc, char** argv){
 	string usrP;
 	int type;
 	int done = 0;
+	int userChoice = 0;
 
 	//begin main loop
 	while(!done){
@@ -73,27 +74,41 @@ int main(int argc, char** argv){
 							cout << "Login Successful\n";
 						}
 						else
-							cout << "invalid password\n";
+							cout << "Invalid Password\n";
 					}
-				}
-				else{
-					if(step != SQLITE_ROW){
-						query = "SELECT EMAIL, PASSWORD FROM STUDENT WHERE EMAIL = '" + usrN + "';";
-						c = query.c_str();
-						sqlite3_prepare_v2(DB, c, -1, &res, 0);
-						sqlite3_bind_int(res, 1, 3);
-						int step = sqlite3_step(res);
-						if (step == SQLITE_ROW){		//if query actually has a row (i.e match found)
-							string QresultU = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 0))); //have to convert const char* to string
-							string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
-							if (QresultU == usrN && QresultP == usrP){ //successful student login
-								cout << "Login Successful\n";
+					else{
+						if(step != SQLITE_ROW){
+							query = "SELECT EMAIL, PASSWORD FROM STUDENT WHERE EMAIL = '" + usrN + "';";
+							c = query.c_str();
+							sqlite3_prepare_v2(DB, c, -1, &res, 0);
+							sqlite3_bind_int(res, 1, 3);
+							int step = sqlite3_step(res);
+							if (step == SQLITE_ROW){		//if query actually has a row (i.e match found)
+								string QresultU = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 0))); //have to convert const char* to string
+								string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+								if (QresultU == usrN && QresultP == usrP){ //successful student login
+									cout << "Login Successful\n";
+									while(!logout){
+										cout << "\nEnter 1 to view all available courses\nEnter 2 to register for courses\nEnter 3 to drop a class\nEnter 4 to list enrolled classes\nEnter 5 to logout\n";
+									  cin >> userChoice;
+										switch(userChoice){
+											case 1: //view all courses
+												query = "SELECT * FROM COURSE;";
+												sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
+												break;
+											case 5:
+												logout = 1;
+												break;
+
+										}
+									}
+								}
+								else
+									cout << "invalid password\n";
 							}
 							else
-								cout << "invalid password\n";
+								cout << "Invalid username\n";
 						}
-						else
-							cout << "Invalid username\n";
 					}
 				}
 			}

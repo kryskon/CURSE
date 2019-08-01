@@ -269,7 +269,6 @@ class admin:public user{
 };
 
 
-
 /*
 list<student>::iterator attemptloginS(string n, string p){
   list<student>::iterator ptr;
