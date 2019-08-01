@@ -73,6 +73,29 @@ int main(int argc, char** argv){
 						string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
 						if (QresultU == usrN && QresultP == usrP){ //successful instructor login
 							cout << "Login Successful\n";
+							while(!logout)
+							{
+								cout << "\nEnter 1 to view rosters \nEnter 2 to view courses\nEnter 3 to logout\n";
+								cin >> userChoice;
+								switch(userChoice)
+								{
+									case 1:
+										cout << "\n----------------Course Roster----------------\n";
+										query = "SELECT STUDENT1, STUDENT2, STUDENT3, STUDENT4, STUDENT5, STUDENT6, STUDENT7, STUDENT8, TITLE FROM COURSE WHERE INSTRUCTOR EMAIL = '" + usrN + "';";
+										sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
+										cout << "-----------------------------------------------\n";
+										break;
+									case 2:
+										cout << "\n----------------Courses Taught----------------\n";
+										query = "SELECT TITLE FROM COURSE WHERE INSTRUCTOR EMAIL = '" + usrN + "';";
+										sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
+										cout << "------------------------------------------------\n";
+										break;
+									case 3:
+									logout = 1;
+									break;
+								}
+							}
 						}
 						else
 							cout << "Invalid Password\n";
