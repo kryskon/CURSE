@@ -133,31 +133,31 @@ int main(int argc, char** argv){
 												sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 												cout << "---------------------------------------------\n";
 												break;
-											case 2:
+											case 2: //add a course
 												int crn;
 												cout << "\nPlease enter the CRN for your desired course: ";
 												cin >> crn;
-												for (int i = 1; i <= 8; i++){
+												for (int i = 1; i <= 8; i++){ //search through DB to find if the course has an empty slot
 													query = "SELECT STUDENT" + to_string(i) + " FROM COURSE WHERE CRN = " + to_string(crn) + " AND STUDENT" + to_string(i) + " IS NULL;";
 													c = query.c_str();
 													sqlite3_prepare_v2(DB, c, -1, &res, 0);
 													sqlite3_bind_int(res, 1, 3);
 													step = sqlite3_step(res);
-													if (step == SQLITE_ROW){
+													if (step == SQLITE_ROW){ //if empty slot found, add student to that spot
 														sql = "UPDATE COURSE SET STUDENT" + to_string(i) + " = " + to_string(currentStudent.getID()) + " WHERE CRN = " + to_string(crn) + ";";
 														exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 														if (exit != SQLITE_OK){
 																std::cerr << "Error adding class to schedule" << std::endl;
 																sqlite3_free(messageError);
+																break;
 														}
 														else{
 															cout << "Course successfully added to schedule!\n";
 															break;
 														}
 													}
-													else
-														cout << "Error, class is at full capacity\n";
 												}
+												cout << "Error, class is at full capacity\n";
 												break;
 											case 3:
 
@@ -166,13 +166,6 @@ int main(int argc, char** argv){
 												cout << "\n----------Current Class Schedule-----------\n";
 												query = "SELECT * FROM COURSE WHERE STUDENT1 = " + to_string(currentStudent.getID()) + " OR STUDENT2 = " + to_string(currentStudent.getID()) + " OR STUDENT3 = " + to_string(currentStudent.getID()) + " OR STUDENT4 = " + to_string(currentStudent.getID()) + " OR STUDENT5 = " + to_string(currentStudent.getID()) + " OR STUDENT6 = " + to_string(currentStudent.getID()) + " OR STUDENT7 = " + to_string(currentStudent.getID()) + " OR STUDENT8 = " + to_string(currentStudent.getID()) + ";";
 												exit = sqlite3_exec(DB, query.c_str(), callback, NULL, &messageError);
-												if (exit != SQLITE_OK){
-														std::cerr << "Error adding class to schedule" << std::endl;
-														sqlite3_free(messageError);
-												}
-												else{
-													cout << "Course successfully added to schedule!\n";
-												}
 												cout << "---------------------------------------------\n";
 												break;
 											case 5:
