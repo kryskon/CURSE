@@ -200,9 +200,9 @@ int main(int argc, char** argv){
 															cout << "Course successfully dropped.\n";
 															break;
 														}
-													}
+													}													
 												}
-
+												cout << "You are not currently registered for that class\n";
 												break;
 											case 4: //print schedule
 												cout << "\n----------Current Class Schedule-----------\n";
