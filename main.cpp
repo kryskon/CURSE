@@ -35,6 +35,7 @@ int main(int argc, char** argv){
 	int done = 0;
 	int userChoice = 0;
 	int step;
+	int crn;
 	string sql;
 
 
@@ -134,7 +135,7 @@ int main(int argc, char** argv){
 												cout << "---------------------------------------------\n";
 												break;
 											case 2: //add a course
-												int crn;
+												crn;
 												cout << "\nPlease enter the CRN for your desired course: ";
 												cin >> crn;
 												for (int i = 1; i <= 8; i++){ //search through DB to find if the course has an empty slot
@@ -159,10 +160,32 @@ int main(int argc, char** argv){
 												}
 												cout << "Error, class is at full capacity\n";
 												break;
-											case 3:
+											case 3:	//drop a class
+												cout << "Enter the CRN of the course you wish to drop: ";
+												cin >> crn;
+												for (int i = 1; i <= 8; i++){ //search through DB to find if the course has an empty slot
+													query = "SELECT STUDENT" + to_string(i) + " FROM COURSE WHERE CRN = " + to_string(crn) + " AND STUDENT" + to_string(i) + " = " + to_string(currentStudent.getID()) + ";";
+													c = query.c_str();
+													sqlite3_prepare_v2(DB, c, -1, &res, 0);
+													sqlite3_bind_int(res, 1, 3);
+													step = sqlite3_step(res);
+													if (step == SQLITE_ROW){ //if match found, remove student from that course
+														sql = "UPDATE COURSE SET STUDENT" + to_string(i) + " = NULL WHERE CRN = " + to_string(crn) + ";";
+														exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+														if (exit != SQLITE_OK){
+																std::cerr << "Error dropping class" << std::endl;
+																sqlite3_free(messageError);
+																break;
+														}
+														else{
+															cout << "Course successfully dropped.\n";
+															break;
+														}
+													}
+												}
 
 												break;
-											case 4:
+											case 4: //print schedule
 												cout << "\n----------Current Class Schedule-----------\n";
 												query = "SELECT * FROM COURSE WHERE STUDENT1 = " + to_string(currentStudent.getID()) + " OR STUDENT2 = " + to_string(currentStudent.getID()) + " OR STUDENT3 = " + to_string(currentStudent.getID()) + " OR STUDENT4 = " + to_string(currentStudent.getID()) + " OR STUDENT5 = " + to_string(currentStudent.getID()) + " OR STUDENT6 = " + to_string(currentStudent.getID()) + " OR STUDENT7 = " + to_string(currentStudent.getID()) + " OR STUDENT8 = " + to_string(currentStudent.getID()) + ";";
 												exit = sqlite3_exec(DB, query.c_str(), callback, NULL, &messageError);
