@@ -37,7 +37,14 @@ int main(int argc, char** argv){
 	int step;
 	int crn;
 	string sql;
-
+	string title;
+	string department;
+	string instructor;
+	string time;
+	string dow;
+	string semester;
+	int year;
+	int credits;
 
 	//begin main loop
 	while(!done){
@@ -53,19 +60,25 @@ int main(int argc, char** argv){
 			cin >> usrP;
 
 			//begin login process
-			query = "SELECT EMAIL, PASSWORD FROM ADMIN WHERE EMAIL = '" + usrN + "';"; //query to find result (email is the same as username)
+			query = "SELECT * FROM ADMIN WHERE EMAIL = '" + usrN + "';"; //query to find result (email is the same as username)
 			const char *c = query.c_str();
 			sqlite3_prepare_v2(DB, c, -1, &res, 0);
 			sqlite3_bind_int(res, 1, 3);
 			int step = sqlite3_step(res);
 			if (step == SQLITE_ROW){		//if query actually has a row (i.e match found)
-				string QresultU = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 0))); //have to convert const char* to string
-				string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+				string QresultU = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 5))); //have to convert const char* to string
+				string QresultP = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
 				if (QresultU == usrN && QresultP == usrP){ //successful admin login
 					cout << "Login Successful\n";
+					int Q1 = int(sqlite3_column_int(res, 0));
+					string Q2 = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+					string Q3 = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+					string Q4 = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
+					string Q5 = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
+					admin currentAdmin(Q1, Q2, Q3, Q4, Q5, QresultU, QresultP); //create new object with all info here to do comparisons
 					while(!logout)
 					{
-						cout << "\nEnter 1 to view rosters \nEnter 2 to view courses\nEnter 3 to logout\n";
+						cout << "\nEnter 1 to view courses \nEnter 2 to view rosters\nEnter 3 to create a course\nEnter 4 to delete a course\nEnter 5 to logout\n";
 						cin >> userChoice;
 						switch(userChoice)
 						{
@@ -75,9 +88,55 @@ int main(int argc, char** argv){
 								sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 								cout << "---------------------------------------------\n";
 								break;
-							case 2:
+							case 2: // view rosters
+								cout << "\nEnter the CRN for the course roster you'd like to view: ";
+								cin >> crn;
+								query = "SELECT STUDENT1, STUDENT2, STUDENT3, STUDENT4, STUDENT5, STUDENT6, STUDENT7, STUDENT8 FROM COURSE WHERE CRN = " + to_string(crn) + ";";
+								sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 								break;
-							case 3:
+							case 3: //create course
+
+								cout << "\nEnter a new CRN (numbers only): ";
+								cin >> crn;
+								cout << "\nEnter a title for the course: ";
+								cin.ignore(); //needed to allow for spaces
+								getline(cin, title, '\n');
+								cout << "\nEnter a department (ex. BSCO):";
+								cin >> department;
+								cout << "\nEnter an instructor username: ";
+								cin >> instructor;
+								cout << "\nEnter a start time: ";
+								cin >> time;
+								cout << "\nEnter the days of the week with no spaces (MTWRF): ";
+								cin >> dow;
+								cout << "\nEnter the semester (spring, summer, fall): ";
+								cin >> semester;
+								cout << "\nEnter the year (2019, 2020, etc): ";
+								cin >> year;
+								cout << "\nEnter the credits this course is worth (no decimal points): ";
+								cin >> credits;
+								sql = "INSERT INTO COURSE VALUES(" + to_string(crn) + ", '" + title + "', '" + department + "', '" + instructor + "', '" + time + "', '" + dow + "', '" + semester + "', " + to_string(year) + ", " + to_string(credits) + ", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+								exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+								if (exit != SQLITE_OK) {
+				        	std::cerr << "Error creating course." << std::endl;
+				        	sqlite3_free(messageError);
+							  }
+							  else
+							  	std::cout << "Course created Successfully!" << std::endl;
+								break;
+							case 4: //delete a course
+								cout << "\nEnter the CRN for the course you wish to delete: ";
+								cin >> crn;
+								sql = "DELETE FROM COURSE WHERE CRN = " + to_string(crn) + ";";
+								exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+								if (exit != SQLITE_OK) {
+				        	std::cerr << "Error deleting course." << std::endl;
+				        	sqlite3_free(messageError);
+							  }
+							  else
+							  	std::cout << "Course deleted Successfully!" << std::endl;
+								break;
+							case 5:
 								logout = 1;
 								break;
 						}
@@ -164,7 +223,7 @@ int main(int argc, char** argv){
 													sqlite3_bind_int(res, 1, 3);
 													step = sqlite3_step(res);
 													if (step == SQLITE_ROW){ //if empty slot found, add student to that spot
-														sql = "UPDATE COURSE SET STUDENT" + to_string(i) + " = " + to_string(currentStudent.getID()) + " WHERE CRN = " + to_string(crn) + ";";
+														sql = "UPDATE COURSE SET STUDENT" + to_string(i) + " = '" + currentStudent.getUSRN() + "' WHERE CRN = " + to_string(crn) + ";";
 														exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 														if (exit != SQLITE_OK){
 																std::cerr << "Error adding class to schedule" << std::endl;
@@ -176,8 +235,10 @@ int main(int argc, char** argv){
 															break;
 														}
 													}
+													if (i == 8){
+														cout << "Error, class is at full capacity\n";
+													}
 												}
-												cout << "Error, class is at full capacity\n";
 												break;
 											case 3:	//drop a class
 												cout << "Enter the CRN of the course you wish to drop: ";
@@ -200,13 +261,13 @@ int main(int argc, char** argv){
 															cout << "Course successfully dropped.\n";
 															break;
 														}
-													}													
+													}
 												}
 												cout << "You are not currently registered for that class\n";
 												break;
 											case 4: //print schedule
 												cout << "\n----------Current Class Schedule-----------\n";
-												query = "SELECT * FROM COURSE WHERE STUDENT1 = " + to_string(currentStudent.getID()) + " OR STUDENT2 = " + to_string(currentStudent.getID()) + " OR STUDENT3 = " + to_string(currentStudent.getID()) + " OR STUDENT4 = " + to_string(currentStudent.getID()) + " OR STUDENT5 = " + to_string(currentStudent.getID()) + " OR STUDENT6 = " + to_string(currentStudent.getID()) + " OR STUDENT7 = " + to_string(currentStudent.getID()) + " OR STUDENT8 = " + to_string(currentStudent.getID()) + ";";
+												query = "SELECT * FROM COURSE WHERE STUDENT1 = '" + currentStudent.getUSRN() + "' OR STUDENT2 = '" + currentStudent.getUSRN() + "' OR STUDENT3 = '" + currentStudent.getUSRN() + "' OR STUDENT4 = '" + currentStudent.getUSRN() + "' OR STUDENT5 = '" + currentStudent.getUSRN() + "' OR STUDENT6 = '" + currentStudent.getUSRN() + "' OR STUDENT7 = '" + currentStudent.getUSRN() + "' OR STUDENT8 = '" + currentStudent.getUSRN() + "';";
 												exit = sqlite3_exec(DB, query.c_str(), callback, NULL, &messageError);
 												cout << "---------------------------------------------\n";
 												break;

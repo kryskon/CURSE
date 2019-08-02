@@ -29,6 +29,7 @@ class user{
     string getPassword(){return password;}
     */
     int getID(){return ID;}
+    string getUSRN(){return email;}
     virtual int options(){
       //this is where users can choose an action based on user type
       //virtual so each class has it's own appropriate options
@@ -103,28 +104,7 @@ class student:public user{
       //do db stuff
     }
 
-    int options(){
-      int userChoice;
-      cout << "\nEnter 1 to view courses\nEnter 2 to register for courses\nEnter 3 to drop a class\nEnter 4 to list enrolled classes\nEnter 5 to logout\n";
-      cin >> userChoice;
-      switch(userChoice){
-        case 1:
-          this->listCourses();
-          break;
-        case 2:
-          this->Register();
-          break;
-        case 3:
-          this->dropClass();
-          break;
-        case 4:
-          this->currentEnrolled();
-        case 5:
-          return 1;
-          break;  //need to somehow logout here
-      }
-      return 0;
-    }
+
 };
 
 
@@ -179,7 +159,7 @@ class admin:public user{
 
   public:
     admin(){}
-    admin(string fn, string ln, string p, string e, string t, string o){firstName = fn, lastName = ln, email = e, password = p, title = t, office = o;}
+    admin(int i, string fn, string ln, string t, string o, string p, string e){firstName = fn, lastName = ln, email = e, password = p, title = t, office = o, ID = i;}
     ~admin(){}
 
     void viewSchedule(){
@@ -268,36 +248,3 @@ class admin:public user{
       return 0;
     }
 };
-
-
-/*
-list<student>::iterator attemptloginS(string n, string p){
-  list<student>::iterator ptr;
-  for(ptr = studentList.begin(); ptr != studentList.end(); ptr++){ //search list for matching username
-    if((ptr->getUserName() == n) && (ptr->getPassword() == p)){return ptr;} //if match, return pointer
-  }
-  for(ptr = studentList.begin(); ptr != studentList.end(); ptr++){  //if no match, return NULL pointer
-    if(ptr->getUserName() == "NULL"){return ptr;}
-  }
-}
-
-list<instructor>::iterator attemptloginI(string n, string p){
-  list<instructor>::iterator ptr;
-  for(ptr = instructorList.begin(); ptr != instructorList.end(); ptr++){ //search list for matching username
-    if((ptr->getUserName() == n) && (ptr->getPassword() == p)){return ptr;} //if match, return pointer
-  }
-  for(ptr = instructorList.begin(); ptr != instructorList.end(); ptr++){  //if no match, return NULL pointer
-    if(ptr->getUserName() == "NULL"){return ptr;}
-  }
-}
-
-list<admin>::iterator attemptloginA(string n, string p){
-  list<admin>::iterator ptr;
-  for(ptr = adminList.begin(); ptr != adminList.end(); ptr++){ //search list for matching username
-    if((ptr->getUserName() == n) && (ptr->getPassword() == p)){return ptr;} //if match, return pointer
-  }
-  for(ptr = adminList.begin(); ptr != adminList.end(); ptr++){  //if no match, return NULL pointer
-    if(ptr->getUserName() == "NULL"){return ptr;}
-  }
-}
-*/
