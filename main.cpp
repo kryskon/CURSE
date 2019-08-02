@@ -45,7 +45,7 @@ int main(int argc, char** argv){
 	string semester;
 	int year;
 	int credits;
-
+	int Q;
 	//begin main loop
 	while(!done){
 		int logout = 0;
@@ -115,7 +115,18 @@ int main(int argc, char** argv){
 								cin >> year;
 								cout << "\nEnter the credits this course is worth (no decimal points): ";
 								cin >> credits;
-								sql = "INSERT INTO COURSE VALUES(" + to_string(crn) + ", '" + title + "', '" + department + "', '" + instructor + "', '" + time + "', '" + dow + "', '" + semester + "', " + to_string(year) + ", " + to_string(credits) + ", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+								query = "SELECT ID FROM INSTRUCTOR WHERE EMAIL = '" + instructor + "';";
+								sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
+								c = query.c_str();
+								sqlite3_prepare_v2(DB, c, -1, &res, 0);
+								sqlite3_bind_int(res, 1, 3);
+								step = sqlite3_step(res);
+								if (step == SQLITE_ROW){
+									Q = int(sqlite3_column_int(res, 0));
+
+								}
+								cout << "MADE IT HERE. ql is : " << Q << endl;
+								sql = "INSERT INTO COURSE VALUES(" + to_string(crn) + ", '" + title + "', '" + department + "', '" + instructor + "', '" + time + "', '" + dow + "', '" + semester + "', " + to_string(year) + ", " + to_string(credits) + ", " + to_string(Q) + " , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
 								exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 								if (exit != SQLITE_OK) {
 				        	std::cerr << "Error creating course." << std::endl;
@@ -208,7 +219,7 @@ int main(int argc, char** argv){
 										switch(userChoice){
 											case 1: //view all courses
 												cout << "\n----------------All Courses----------------\n";
-												query = "SELECT * FROM COURSE;";
+												query = "SELECT CRN, TITLE, DEPARTMENT, INSTRUCTOR, TIME, DOW, SEMESTER, YEAR, CREDITS FROM COURSE;";
 												sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 												cout << "---------------------------------------------\n";
 												break;
