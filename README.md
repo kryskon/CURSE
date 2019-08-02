@@ -1,4 +1,4 @@
-#CURSE
+# CURSE
 
 To Compile: g++ main.cpp -lsqlite -std=c++11
 
