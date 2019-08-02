@@ -216,7 +216,8 @@ int main(int argc, char** argv){
 									string Q3 = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
 									int Q4 = int(sqlite3_column_int(res, 3));
 									string Q5 = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
-									student currentStudent(Q1, Q2, Q3, Q4, Q5, QresultU, QresultP); //create new object with all info here to do comparisons
+									int Q6 = int(sqlite3_column_int(res, 7));
+									student currentStudent(Q1, Q2, Q3, Q4, Q5, QresultU, QresultP, Q6); //create new object with all info here to do comparisons
 									while(!logout){
 										cout << "\nEnter 1 to view all available courses\nEnter 2 to register for courses\nEnter 3 to drop a class\nEnter 4 to list enrolled classes\nEnter 5 to logout\n";
 									  cin >> userChoice;
@@ -236,7 +237,10 @@ int main(int argc, char** argv){
 												cout << "---------------------------------------------\n";
 												break;
 											case 2: //add a course
-												crn;
+												if (currentStudent.getHolds() >= 1){
+													cout << "Error. You're account has 1 or more holds preventing you from adding a course.\n";
+													break;
+												}
 												cout << "\nPlease enter the CRN for your desired course: ";
 												cin >> crn;
 												for (int i = 1; i <= 8; i++){ //search through DB to find if the course has an empty slot

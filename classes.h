@@ -43,13 +43,13 @@ class course{
 class student:public user{
   protected:
     string major;
-    int gradYear;
+    int gradYear, holds;
 
   public:
     student(){}
-    student(int i, string fn, string ln, int y, string m, string e, string p){ID = i, firstName = fn, lastName = ln, email = e, password = p, major = m, gradYear = y;}
+    student(int i, string fn, string ln, int y, string m, string e, string p, int h){ID = i, firstName = fn, lastName = ln, email = e, password = p, major = m, gradYear = y, holds = h;}
     ~student(){}
-
+    int getHolds(){return holds;}
 
 
 
@@ -168,5 +168,5 @@ class admin:public user{
       //do db stuff
     }
 
-    
+
 };
