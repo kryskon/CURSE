@@ -43,6 +43,7 @@ int main(int argc, char** argv){
 	string time;
 	string dow;
 	string semester;
+	string order;
 	int year;
 	int credits;
 	int Q;
@@ -91,8 +92,11 @@ int main(int argc, char** argv){
 							case 2: // view rosters
 								cout << "\nEnter the CRN for the course roster you'd like to view: ";
 								cin >> crn;
+								cout << "\n---------------Roster----------------------\n";
+								cout << "For course CRN " << crn << ":\n";
 								query = "SELECT STUDENT1, STUDENT2, STUDENT3, STUDENT4, STUDENT5, STUDENT6, STUDENT7, STUDENT8 FROM COURSE WHERE CRN = " + to_string(crn) + ";";
 								sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
+								cout << "\n-------------------------------------------\n";
 								break;
 							case 3: //create course
 
@@ -176,13 +180,13 @@ int main(int argc, char** argv){
 								{
 									case 1:
 										cout << "\n----------------Course Roster----------------\n";
-										query = "SELECT STUDENT1, STUDENT2, STUDENT3, STUDENT4, STUDENT5, STUDENT6, STUDENT7, STUDENT8, TITLE FROM COURSE WHERE EMAIL = '" + usrN + "';";
+										query = "SELECT STUDENT1, STUDENT2, STUDENT3, STUDENT4, STUDENT5, STUDENT6, STUDENT7, STUDENT8, TITLE FROM COURSE WHERE INSTRUCTOR = '" + usrN + "';";
 										sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 										cout << "-----------------------------------------------\n";
 										break;
 									case 2:
 										cout << "\n----------------Courses Taught----------------\n";
-										query = "SELECT TITLE FROM COURSE WHERE INSTRUCTOR EMAIL = '" + usrN + "';";
+										query = "SELECT TITLE FROM COURSE WHERE INSTRUCTOR = '" + usrN + "';";
 										sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 										cout << "------------------------------------------------\n";
 										break;
@@ -218,8 +222,16 @@ int main(int argc, char** argv){
 									  cin >> userChoice;
 										switch(userChoice){
 											case 1: //view all courses
+												cout << "Press 1 to order by CRN, 2 to order by Title, or 3 to order by Instructor: ";
+												cin >> userChoice;
+												if (userChoice == 1)
+													order = "CRN";
+												else if (userChoice == 2)
+													order = "TITLE";
+												else
+													order = "INSTRUCTOR";
 												cout << "\n----------------All Courses----------------\n";
-												query = "SELECT CRN, TITLE, DEPARTMENT, INSTRUCTOR, TIME, DOW, SEMESTER, YEAR, CREDITS FROM COURSE;";
+												query = "SELECT CRN, TITLE, DEPARTMENT, INSTRUCTOR, TIME, DOW, SEMESTER, YEAR, CREDITS FROM COURSE ORDER BY " + order + " ASC;";
 												sqlite3_exec(DB, query.c_str(), callback, NULL, NULL);
 												cout << "---------------------------------------------\n";
 												break;
@@ -255,7 +267,7 @@ int main(int argc, char** argv){
 												cout << "Enter the CRN of the course you wish to drop: ";
 												cin >> crn;
 												for (int i = 1; i <= 8; i++){ //search through DB to find if the course has an empty slot
-													query = "SELECT STUDENT" + to_string(i) + " FROM COURSE WHERE CRN = " + to_string(crn) + " AND STUDENT" + to_string(i) + " = " + to_string(currentStudent.getID()) + ";";
+													query = "SELECT STUDENT" + to_string(i) + " FROM COURSE WHERE CRN = " + to_string(crn) + " AND STUDENT" + to_string(i) + " = '" + currentStudent.getUSRN() + "';";
 													c = query.c_str();
 													sqlite3_prepare_v2(DB, c, -1, &res, 0);
 													sqlite3_bind_int(res, 1, 3);
@@ -273,12 +285,14 @@ int main(int argc, char** argv){
 															break;
 														}
 													}
+													if (i == 8){
+														cout << "You are not currently registered for that class\n";
+													}
 												}
-												cout << "You are not currently registered for that class\n";
 												break;
 											case 4: //print schedule
 												cout << "\n----------Current Class Schedule-----------\n";
-												query = "SELECT * FROM COURSE WHERE STUDENT1 = '" + currentStudent.getUSRN() + "' OR STUDENT2 = '" + currentStudent.getUSRN() + "' OR STUDENT3 = '" + currentStudent.getUSRN() + "' OR STUDENT4 = '" + currentStudent.getUSRN() + "' OR STUDENT5 = '" + currentStudent.getUSRN() + "' OR STUDENT6 = '" + currentStudent.getUSRN() + "' OR STUDENT7 = '" + currentStudent.getUSRN() + "' OR STUDENT8 = '" + currentStudent.getUSRN() + "';";
+												query = "SELECT CRN, TITLE, DEPARTMENT, INSTRUCTOR, TIME, DOW, SEMESTER, YEAR, CREDITS FROM COURSE WHERE STUDENT1 = '" + currentStudent.getUSRN() + "' OR STUDENT2 = '" + currentStudent.getUSRN() + "' OR STUDENT3 = '" + currentStudent.getUSRN() + "' OR STUDENT4 = '" + currentStudent.getUSRN() + "' OR STUDENT5 = '" + currentStudent.getUSRN() + "' OR STUDENT6 = '" + currentStudent.getUSRN() + "' OR STUDENT7 = '" + currentStudent.getUSRN() + "' OR STUDENT8 = '" + currentStudent.getUSRN() + "';";
 												exit = sqlite3_exec(DB, query.c_str(), callback, NULL, &messageError);
 												cout << "---------------------------------------------\n";
 												break;
