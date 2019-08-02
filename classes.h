@@ -19,15 +19,6 @@ class user{
 
     void registerClass();
 
-    /*
-    void setFirstName(string fn){firstName = fn;}
-    string getFirstName(){return firstName;}
-    void setLastName(string ln){lastName = ln;}
-    void setUserName(string u){userName = u;}
-    string getUserName(){return userName;}
-    void setPassword(string p){password = p;}
-    string getPassword(){return password;}
-    */
     int getID(){return ID;}
     string getUSRN(){return email;}
     virtual int options(){
@@ -40,21 +31,12 @@ class course{
   protected:
     int CRN, credits, year;
     string title, department, instructor, time, dow, semester; //must be junior, senior, etc to register for this class
-    //list<student> students;
 
   public:
     course(){}
     course(int c, int cr, int yr, string t, string d, string i, string ti, string days, string sem){CRN = c, credits = cr, year = yr, title = t, department = d, instructor = i, time = ti, dow = days, semester = sem;}
     ~course(){}
 
-    /*
-    void setCRN(int c){CRN = c;}
-    int getCRN(){return CRN;}
-    void setMinYear(string y){minYear = y;}
-    string getMinYear(){return minYear;}
-    void setSubject(string s){subject = s;}
-    string getSubject(){return subject;}
-    */
 
 };
 
@@ -68,24 +50,9 @@ class student:public user{
     student(int i, string fn, string ln, int y, string m, string e, string p){ID = i, firstName = fn, lastName = ln, email = e, password = p, major = m, gradYear = y;}
     ~student(){}
 
-    /*
-    void setMajor(string m){major = m;}
-    string getMajor(){return major;}
-    void setYear(string y){year = y;}
-    string getYear(){return year;}
-    void setClasses(list<int> c){classes = c;}
-    list<int> getClasses(){return classes;}
-    */
 
 
-    void Register(){
-      int crn;
-      cout << "Please enter a course crn: ";
-      cin >> crn;
-      //search database for crn. Find course and requirements
-      //compare prereqs and class sizez. If no issues:
 
-    }
 
     void dropClass(){
       int crn;
@@ -118,12 +85,7 @@ class instructor:public user{
     instructor(string fn, string ln, string e, string p, string t, string d, int hy){firstName = fn, lastName = ln, email = e, password = p, title = t, department = d, hireYear = hy;}
     ~instructor(){}
 
-    /*()
-    void setInstructorSubject(string s){instructorSubject = s;}
-    string getInstructorSubject(){return instructorSubject;}
-    void setClasses(list<int> c){classes = c;}
-    list<int> getClasses(){return classes;}
-    */
+
 
     void viewRoster(){ //may need to change completely when databases get implemented.
       //do db stuff
@@ -134,23 +96,7 @@ class instructor:public user{
       //do db stuff
     }
 
-    int options(){
-      int userChoice;
-      cout << "\nEnter 1 to view roster\nEnter 2 to view classes\nEnter 3 to logout\n";
-      cin >> userChoice;
-      switch(userChoice){
-        case 1:
-          this->viewRoster();
-          break;
-        case 2:
-          this->viewClasses();
-          break;
-        case 3:
-          return 1;
-          break;  //need to somehow logout here
-      }
-      return 0;
-    }
+
 };
 
 class admin:public user{
@@ -191,15 +137,7 @@ class admin:public user{
       cout << "\nEnter the semester: ";
       cin >> sem;
       course newCourse(c, cr, yr, t, d, i, ti, days, sem);
-      /*
-      string sql("INSERT INTO PROGRAMMER VALUES(1, 'ADA', 'LOVELACE', 1815);"
-               	"INSERT INTO PROGRAMMER VALUES(2, 'GRACE', 'HOPPER', 1906);"
-		              "INSERT INTO PROGRAMMER VALUES(3, 'MARY KENNETH', 'KELLER', 1913);"
-               	"INSERT INTO PROGRAMMER VALUES(4, 'EVELYN', 'BOYD GRANVILLE', 1924);"
-		              "INSERT INTO PROGRAMMER VALUES(5, 'CAROL', 'SHAW', 1955);"
-		   );
-    */
-    //may want to avoid doing db stuff in header file. instead pass variables through functions and alter in main??
+
 
     }
     int removeCourse(){
@@ -230,21 +168,5 @@ class admin:public user{
       //do db stuff
     }
 
-    int options(){
-      int userChoice;
-      cout << "\nEnter 1 to add a course\nEnter 2 to remove a course\nEnter 3 to logout\n";
-      cin >> userChoice;
-      switch(userChoice){
-        case 1:
-          this->addCourse();
-          break;
-        case 2:
-          this->removeCourse();
-          break;
-        case 3:
-          return 1;
-          break;  //need to somehow logout here
-      }
-      return 0;
-    }
+    
 };
